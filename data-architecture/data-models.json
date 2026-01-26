@@ -1,0 +1,163 @@
+{
+  "Entry": {
+    "id": "integer (primary key)",
+    "entry_code": "string (unique, format: ENT-XXX)",
+    "name": "string (required, max 255)",
+    "description": "text (optional)",
+    "category_id": "integer (foreign key, nullable)",
+    "status": "enum: active|pending|inactive (default: pending)",
+    "value": "decimal(15,2) (nullable)",
+    "value_currency": "string (3 chars, default: USD)",
+    "metadata": "jsonb (flexible key-value storage)",
+    "created_at": "timestamp",
+    "updated_at": "timestamp",
+    "created_by": "integer (foreign key to users)",
+    "updated_by": "integer (foreign key to users)",
+    "deleted_at": "timestamp (nullable, soft delete)"
+  },
+  "Category": {
+    "id": "integer (primary key)",
+    "code": "string (unique, max 50)",
+    "name": "string (required, max 255)",
+    "description": "text (optional)",
+    "parent_id": "integer (self-referential, nullable)",
+    "sort_order": "integer (default: 0)",
+    "is_active": "boolean (default: true)",
+    "created_at": "timestamp",
+    "updated_at": "timestamp",
+    "created_by": "integer (foreign key)",
+    "updated_by": "integer (foreign key)"
+  },
+  "Activity": {
+    "id": "integer (primary key)",
+    "entity_type": "string (required, max 50)",
+    "entity_id": "integer (required)",
+    "activity_type": "enum: created|updated|deleted|status_changed",
+    "title": "string (required, max 255)",
+    "description": "text (optional)",
+    "status": "enum: completed|active|pending (default: completed)",
+    "metadata": "jsonb (optional)",
+    "performed_by": "integer (foreign key to users)",
+    "performed_at": "timestamp (default: now)"
+  },
+  "WorkflowDefinition": {
+    "id": "integer (primary key)",
+    "code": "string (unique, max 50)",
+    "name": "string (required, max 255)",
+    "description": "text (optional)",
+    "steps": "jsonb (array of step objects)",
+    "is_active": "boolean (default: true)",
+    "created_at": "timestamp",
+    "updated_at": "timestamp"
+  },
+  "WorkflowInstance": {
+    "id": "integer (primary key)",
+    "workflow_definition_id": "integer (foreign key)",
+    "entity_type": "string (max 50)",
+    "entity_id": "integer",
+    "current_step": "integer (default: 0)",
+    "status": "enum: pending|in_progress|completed|failed",
+    "started_at": "timestamp",
+    "completed_at": "timestamp (nullable)",
+    "metadata": "jsonb (optional)",
+    "created_by": "integer (foreign key)"
+  },
+  "WorkflowStepData": {
+    "id": "integer (primary key)",
+    "workflow_instance_id": "integer (foreign key)",
+    "step_index": "integer (required)",
+    "step_data": "jsonb (step-specific data)",
+    "completed_at": "timestamp (nullable)"
+  },
+  "KanbanBoard": {
+    "id": "integer (primary key)",
+    "code": "string (unique, max 50)",
+    "name": "string (required, max 255)",
+    "description": "text (optional)",
+    "is_active": "boolean (default: true)",
+    "created_at": "timestamp",
+    "updated_at": "timestamp",
+    "created_by": "integer (foreign key)"
+  },
+  "KanbanColumn": {
+    "id": "integer (primary key)",
+    "board_id": "integer (foreign key, required)",
+    "code": "string (required, max 50)",
+    "name": "string (required, max 255)",
+    "sort_order": "integer (default: 0)",
+    "color": "string (hex color, 7 chars)",
+    "is_active": "boolean (default: true)"
+  },
+  "KanbanCard": {
+    "id": "integer (primary key)",
+    "board_id": "integer (foreign key, required)",
+    "column_id": "integer (foreign key, required)",
+    "title": "string (required, max 255)",
+    "description": "text (optional)",
+    "entry_id": "integer (foreign key, nullable)",
+    "metadata": "jsonb (optional)",
+    "sort_order": "integer (default: 0)",
+    "created_at": "timestamp",
+    "updated_at": "timestamp",
+    "created_by": "integer (foreign key)"
+  },
+  "KPIDefinition": {
+    "id": "integer (primary key)",
+    "code": "string (unique, max 50)",
+    "name": "string (required, max 255)",
+    "description": "text (optional)",
+    "calculation_type": "enum: count|sum|avg|custom",
+    "calculation_query": "text (SQL or formula)",
+    "unit": "enum: number|currency|percentage",
+    "is_active": "boolean (default: true)",
+    "created_at": "timestamp"
+  },
+  "KPIValue": {
+    "id": "integer (primary key)",
+    "kpi_id": "integer (foreign key, required)",
+    "period_type": "enum: daily|weekly|monthly",
+    "period_start": "date (required)",
+    "period_end": "date (required)",
+    "value": "decimal(20,4) (required)",
+    "previous_value": "decimal(20,4) (nullable)",
+    "change_percentage": "decimal(10,2) (nullable)",
+    "calculated_at": "timestamp"
+  },
+  "ChartData": {
+    "id": "integer (primary key)",
+    "chart_type": "enum: line|bar|area|pie",
+    "chart_code": "string (required, max 50)",
+    "period_type": "enum: daily|weekly|monthly",
+    "period_start": "date (required)",
+    "data_points": "jsonb (array of data point objects)",
+    "created_at": "timestamp"
+  },
+  "User": {
+    "id": "integer (primary key)",
+    "username": "string (unique, max 100)",
+    "email": "string (unique, max 255)",
+    "password_hash": "string (required, max 255)",
+    "first_name": "string (max 100)",
+    "last_name": "string (max 100)",
+    "role": "enum: admin|user|viewer (default: user)",
+    "is_active": "boolean (default: true)",
+    "last_login_at": "timestamp (nullable)",
+    "created_at": "timestamp",
+    "updated_at": "timestamp"
+  },
+  "UserPreference": {
+    "id": "integer (primary key)",
+    "user_id": "integer (foreign key, required)",
+    "preference_key": "string (required, max 100)",
+    "preference_value": "text (nullable)"
+  },
+  "SystemSetting": {
+    "id": "integer (primary key)",
+    "setting_key": "string (unique, max 100)",
+    "setting_value": "text (nullable)",
+    "setting_type": "enum: string|number|boolean|json",
+    "description": "text (optional)",
+    "updated_at": "timestamp",
+    "updated_by": "integer (foreign key)"
+  }
+}
