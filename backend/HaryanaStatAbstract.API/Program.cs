@@ -63,8 +63,8 @@ builder.Services.AddCors(options =>
         }
         else
         {
-            // Development: Default to localhost
-            policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
+            // Development: localhost (Vite may use 5174, 5175 when ports in use)
+            policy.WithOrigins("http://localhost:5173", "http://localhost:5174", "http://localhost:5175", "http://localhost:3000")
                   .AllowAnyMethod()
                   .AllowAnyHeader()
                   .AllowCredentials();
@@ -139,6 +139,9 @@ builder.Services.AddScoped<HaryanaStatAbstract.API.Services.AreaAndPopulation.IT
 // Education Department
 builder.Services.AddScoped<HaryanaStatAbstract.API.Services.Education.ITable6_1InstitutionsService,
     HaryanaStatAbstract.API.Services.Education.Table6_1InstitutionsService>();
+// Social Security and Social Defence Department
+builder.Services.AddScoped<HaryanaStatAbstract.API.Services.SocialSecurityAndSocialDefence.ITable7_1SanctionedStrengthPoliceService,
+    HaryanaStatAbstract.API.Services.SocialSecurityAndSocialDefence.Table7_1SanctionedStrengthPoliceService>();
 // Legacy (to be removed after migration)
 // builder.Services.AddScoped<ICensusPopulationService, CensusPopulationService>();
 builder.Services.AddScoped<IAuthService, AuthService>();

@@ -73,6 +73,9 @@ export default function MakerDashboard() {
     if (screenCode.includes("EDUCATION") || screenCode.includes("TABLE_6_1")) {
       return "/education/table6-1"
     }
+    if (screenCode.includes("SSD") || screenCode.includes("TABLE_7_1")) {
+      return "/social-security/table7-1"
+    }
     
     return "#"
   }

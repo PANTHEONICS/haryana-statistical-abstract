@@ -423,12 +423,19 @@ namespace HaryanaStatAbstract.API.Controllers
                     .GroupBy(dm => dm.Menu.MenuPath)
                     .ToDictionary(g => g.Key, g => g.Select(dm => new { dm.DepartmentID, dm.Department.DepartmentName }).ToList());
 
-                // Get all active screen workflows
                 var allScreenWorkflows = await _context.ScreenWorkflows
                     .Include(sw => sw.WorkflowStatus)
                     .Include(sw => sw.CreatedByUser)
                     .Where(sw => sw.IsActive)
                     .ToListAsync();
+
+                var screenRegistryDeptMap = new Dictionary<string, (int DeptId, string DeptName)>(StringComparer.OrdinalIgnoreCase);
+                try
+                {
+                    var registries = await _context.MstScreenRegistries.Include(r => r.Department).Where(r => r.Department != null).ToListAsync();
+                    foreach (var r in registries) screenRegistryDeptMap[r.ScreenCode] = (r.DepartmentID, r.Department.DepartmentName);
+                }
+                catch { }
 
                 // Get user's accessible menus to filter screens
                 var accessibleMenuPaths = new List<string>();
@@ -462,10 +469,9 @@ namespace HaryanaStatAbstract.API.Controllers
                     accessibleMenuPaths = userDepartmentMenus;
                 }
 
-                // Helper function to get department for a screen based on table name, screen code, or screen name
                 Func<string, string, string, int?> getDepartmentForScreen = (tableName, screenCode, screenName) =>
                 {
-                    // Try to match by menu name or menu path
+                    if (screenRegistryDeptMap.TryGetValue(screenCode, out var regDept)) return regDept.DeptId;
                     foreach (var mapping in departmentMenuMappings)
                     {
                         var menu = mapping.Menu;
@@ -495,7 +501,11 @@ namespace HaryanaStatAbstract.API.Controllers
                             {
                                 pathMatches = true;
                             }
-                            
+                            else if ((menuPath.Contains("social-security") || menuPath.Contains("table7-1") || menuPath.Contains("table7_1")) && 
+                                     (tableNameLower.Contains("ssd") || screenCodeLower.Contains("ssd") || screenCodeLower.Contains("table_7_1") || screenNameLower.Contains("police")))
+                            {
+                                pathMatches = true;
+                            }
                             if (pathMatches)
                             {
                                 return mapping.DepartmentID;
@@ -523,7 +533,11 @@ namespace HaryanaStatAbstract.API.Controllers
                             {
                                 nameMatches = true;
                             }
-                            
+                            else if ((menuName.Contains("police") || menuName.Contains("table 7.1") || menuName.Contains("table7.1") || menuName.Contains("sanctioned")) && 
+                                     (screenCodeLower.Contains("ssd") || tableNameLower.Contains("ssd") || screenNameLower.Contains("police")))
+                            {
+                                nameMatches = true;
+                            }
                             if (nameMatches)
                             {
                                 return mapping.DepartmentID;
@@ -548,14 +562,14 @@ namespace HaryanaStatAbstract.API.Controllers
                     var currentStatusId = screenWorkflow.CurrentStatusID;
                     var statusName = screenWorkflow.WorkflowStatus?.StatusName ?? "Unknown";
 
-                    // Get department for this screen
                     var screenDepartmentId = getDepartmentForScreen(tableName, screenCode, screenName);
-                    var screenDepartmentName = screenDepartmentId.HasValue
-                        ? departmentMenuMappings
-                            .Where(dm => dm.DepartmentID == screenDepartmentId.Value)
-                            .Select(dm => dm.Department.DepartmentName)
-                            .FirstOrDefault()
-                        : null;
+                    string? screenDepartmentName = null;
+                    if (screenDepartmentId.HasValue)
+                    {
+                        if (screenRegistryDeptMap.TryGetValue(screenCode, out var regDept)) screenDepartmentName = regDept.DeptName;
+                        if (string.IsNullOrEmpty(screenDepartmentName))
+                            screenDepartmentName = departmentMenuMappings.Where(dm => dm.DepartmentID == screenDepartmentId.Value).Select(dm => dm.Department.DepartmentName).FirstOrDefault();
+                    }
 
                     // For Maker/Checker: Only include screens from their department
                     if ((roleName == "Department Maker" || roleName == "Department Checker") && departmentId.HasValue)
@@ -602,6 +616,13 @@ namespace HaryanaStatAbstract.API.Controllers
                                          (tableNameLower.Contains("education") || screenCodeLower.Contains("education") || screenNameLower.Contains("education") || 
                                           screenNameLower.Contains("institution") || tableNameLower.Contains("table_6_1") || screenCodeLower.Contains("table_6_1") || 
                                           screenCodeLower.Contains("table6_1")))
+                                {
+                                    menuMatches = true;
+                                }
+                                // Match SSD / Social Security Defence / Table 7.1
+                                else if ((menuPath.Contains("social-security") || menuPath.Contains("table7-1") || menuPath.Contains("table7_1") || 
+                                         menuName.Contains("police") || menuName.Contains("table 7.1") || menuName.Contains("sanctioned")) && 
+                                         (tableNameLower.Contains("ssd") || screenCodeLower.Contains("ssd") || screenCodeLower.Contains("table_7_1") || screenNameLower.Contains("police")))
                                 {
                                     menuMatches = true;
                                 }

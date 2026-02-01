@@ -1,6 +1,7 @@
 using HaryanaStatAbstract.API.Models;
 using HaryanaStatAbstract.API.Models.AreaAndPopulation;
 using HaryanaStatAbstract.API.Models.Education;
+using HaryanaStatAbstract.API.Models.SocialSecurityAndSocialDefence;
 using Microsoft.EntityFrameworkCore;
 
 namespace HaryanaStatAbstract.API.Data
@@ -20,6 +21,9 @@ namespace HaryanaStatAbstract.API.Data
         
         // Education Department
         public DbSet<Table6_1Institutions> Table6_1Institutions { get; set; }
+
+        // Social Security and Social Defence Department
+        public DbSet<Table7_1SanctionedStrengthPolice> Table7_1SanctionedStrengthPolice { get; set; }
         
         // Legacy (to be removed after migration)
         // public DbSet<CensusPopulation> CensusPopulations { get; set; }
@@ -39,6 +43,7 @@ namespace HaryanaStatAbstract.API.Data
         public DbSet<MstWorkflowStatus> MstWorkflowStatuses { get; set; }
         public DbSet<WorkflowAuditHistory> WorkflowAuditHistories { get; set; }
         public DbSet<ScreenWorkflow> ScreenWorkflows { get; set; }
+        public DbSet<MstScreenRegistry> MstScreenRegistries { get; set; }
         
         // Error Logging Module
         public DbSet<ErrorLog> ErrorLogs { get; set; }
@@ -106,6 +111,14 @@ namespace HaryanaStatAbstract.API.Data
                     .WithMany()
                     .HasForeignKey(e => e.ModifiedBy)
                     .OnDelete(DeleteBehavior.NoAction);
+            });
+
+            modelBuilder.Entity<Table7_1SanctionedStrengthPolice>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.HasIndex(e => e.Year).IsUnique();
+                entity.HasOne(e => e.CreatedByUser).WithMany().HasForeignKey(e => e.CreatedBy).OnDelete(DeleteBehavior.NoAction);
+                entity.HasOne(e => e.ModifiedByUser).WithMany().HasForeignKey(e => e.ModifiedBy).OnDelete(DeleteBehavior.NoAction);
             });
 
             // Old User/Role/UserRole/RefreshToken entities removed
