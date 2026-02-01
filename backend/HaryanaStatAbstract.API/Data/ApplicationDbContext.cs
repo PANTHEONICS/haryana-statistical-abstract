@@ -24,6 +24,8 @@ namespace HaryanaStatAbstract.API.Data
 
         // Social Security and Social Defence Department
         public DbSet<Table7_1SanctionedStrengthPolice> Table7_1SanctionedStrengthPolice { get; set; }
+        public DbSet<Table7_6NoOfPrisonersClasswise> Table7_6NoOfPrisonersClasswise { get; set; }
+        public DbSet<Table7_7PrisonerMaintenanceExpenditure> Table7_7PrisonerMaintenanceExpenditure { get; set; }
         
         // Legacy (to be removed after migration)
         // public DbSet<CensusPopulation> CensusPopulations { get; set; }
@@ -114,6 +116,22 @@ namespace HaryanaStatAbstract.API.Data
             });
 
             modelBuilder.Entity<Table7_1SanctionedStrengthPolice>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.HasIndex(e => e.Year).IsUnique();
+                entity.HasOne(e => e.CreatedByUser).WithMany().HasForeignKey(e => e.CreatedBy).OnDelete(DeleteBehavior.NoAction);
+                entity.HasOne(e => e.ModifiedByUser).WithMany().HasForeignKey(e => e.ModifiedBy).OnDelete(DeleteBehavior.NoAction);
+            });
+
+            modelBuilder.Entity<Table7_6NoOfPrisonersClasswise>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.HasIndex(e => e.Year).IsUnique();
+                entity.HasOne(e => e.CreatedByUser).WithMany().HasForeignKey(e => e.CreatedBy).OnDelete(DeleteBehavior.NoAction);
+                entity.HasOne(e => e.ModifiedByUser).WithMany().HasForeignKey(e => e.ModifiedBy).OnDelete(DeleteBehavior.NoAction);
+            });
+
+            modelBuilder.Entity<Table7_7PrisonerMaintenanceExpenditure>(entity =>
             {
                 entity.HasKey(e => e.Id);
                 entity.HasIndex(e => e.Year).IsUnique();

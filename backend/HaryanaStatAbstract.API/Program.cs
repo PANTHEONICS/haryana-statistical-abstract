@@ -142,6 +142,10 @@ builder.Services.AddScoped<HaryanaStatAbstract.API.Services.Education.ITable6_1I
 // Social Security and Social Defence Department
 builder.Services.AddScoped<HaryanaStatAbstract.API.Services.SocialSecurityAndSocialDefence.ITable7_1SanctionedStrengthPoliceService,
     HaryanaStatAbstract.API.Services.SocialSecurityAndSocialDefence.Table7_1SanctionedStrengthPoliceService>();
+builder.Services.AddScoped<HaryanaStatAbstract.API.Services.SocialSecurityAndSocialDefence.ITable7_6NoOfPrisonersClasswiseService,
+    HaryanaStatAbstract.API.Services.SocialSecurityAndSocialDefence.Table7_6NoOfPrisonersClasswiseService>();
+builder.Services.AddScoped<HaryanaStatAbstract.API.Services.SocialSecurityAndSocialDefence.ITable7_7PrisonerMaintenanceExpenditureService,
+    HaryanaStatAbstract.API.Services.SocialSecurityAndSocialDefence.Table7_7PrisonerMaintenanceExpenditureService>();
 // Legacy (to be removed after migration)
 // builder.Services.AddScoped<ICensusPopulationService, CensusPopulationService>();
 builder.Services.AddScoped<IAuthService, AuthService>();

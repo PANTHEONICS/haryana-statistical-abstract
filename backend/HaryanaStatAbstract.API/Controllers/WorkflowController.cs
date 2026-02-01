@@ -506,6 +506,16 @@ namespace HaryanaStatAbstract.API.Controllers
                             {
                                 pathMatches = true;
                             }
+                            else if ((menuPath.Contains("social-security") || menuPath.Contains("table7-6") || menuPath.Contains("table7_6")) && 
+                                     (tableNameLower.Contains("ssd") || screenCodeLower.Contains("ssd") || screenCodeLower.Contains("table_7_6") || screenNameLower.Contains("prisoner")))
+                            {
+                                pathMatches = true;
+                            }
+                            else if ((menuPath.Contains("social-security") || menuPath.Contains("table7-7") || menuPath.Contains("table7_7")) && 
+                                     (tableNameLower.Contains("ssd") || screenCodeLower.Contains("ssd") || screenCodeLower.Contains("table_7_7") || screenNameLower.Contains("expenditure") || screenNameLower.Contains("maintenance")))
+                            {
+                                pathMatches = true;
+                            }
                             if (pathMatches)
                             {
                                 return mapping.DepartmentID;
@@ -535,6 +545,16 @@ namespace HaryanaStatAbstract.API.Controllers
                             }
                             else if ((menuName.Contains("police") || menuName.Contains("table 7.1") || menuName.Contains("table7.1") || menuName.Contains("sanctioned")) && 
                                      (screenCodeLower.Contains("ssd") || tableNameLower.Contains("ssd") || screenNameLower.Contains("police")))
+                            {
+                                nameMatches = true;
+                            }
+                            else if ((menuName.Contains("prisoner") || menuName.Contains("table 7.6") || menuName.Contains("table7.6") || menuName.Contains("classwise")) && 
+                                     (screenCodeLower.Contains("ssd") || tableNameLower.Contains("ssd") || screenNameLower.Contains("prisoner")))
+                            {
+                                nameMatches = true;
+                            }
+                            else if ((menuName.Contains("expenditure") || menuName.Contains("maintenance") || menuName.Contains("table 7.7") || menuName.Contains("table7.7")) && 
+                                     (screenCodeLower.Contains("ssd") || tableNameLower.Contains("ssd") || screenNameLower.Contains("expenditure")))
                             {
                                 nameMatches = true;
                             }
@@ -623,6 +643,20 @@ namespace HaryanaStatAbstract.API.Controllers
                                 else if ((menuPath.Contains("social-security") || menuPath.Contains("table7-1") || menuPath.Contains("table7_1") || 
                                          menuName.Contains("police") || menuName.Contains("table 7.1") || menuName.Contains("sanctioned")) && 
                                          (tableNameLower.Contains("ssd") || screenCodeLower.Contains("ssd") || screenCodeLower.Contains("table_7_1") || screenNameLower.Contains("police")))
+                                {
+                                    menuMatches = true;
+                                }
+                                // Match SSD / Table 7.6 Prisoners
+                                else if ((menuPath.Contains("social-security") || menuPath.Contains("table7-6") || menuPath.Contains("table7_6") || 
+                                         menuName.Contains("prisoner") || menuName.Contains("table 7.6") || menuName.Contains("classwise")) && 
+                                         (tableNameLower.Contains("ssd") || screenCodeLower.Contains("ssd") || screenCodeLower.Contains("table_7_6") || screenNameLower.Contains("prisoner")))
+                                {
+                                    menuMatches = true;
+                                }
+                                // Match SSD / Table 7.7 Expenditure
+                                else if ((menuPath.Contains("social-security") || menuPath.Contains("table7-7") || menuPath.Contains("table7_7") || 
+                                         menuName.Contains("expenditure") || menuName.Contains("maintenance") || menuName.Contains("table 7.7")) && 
+                                         (tableNameLower.Contains("ssd") || screenCodeLower.Contains("ssd") || screenCodeLower.Contains("table_7_7") || screenNameLower.Contains("expenditure")))
                                 {
                                     menuMatches = true;
                                 }
