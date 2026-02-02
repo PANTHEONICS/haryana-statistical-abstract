@@ -17,15 +17,18 @@ import { exportToCSV } from "@/utils/export"
 import { formatNumber } from "@/utils/format"
 
 const getVal = (r, ...keys) => { for (const k of keys) { const v = r?.[k]; if (v !== undefined && v !== null) return v } return undefined }
-const mapRecord = (record) => ({
-  id: record.id, year: record.year,
+const mapRecord = (record) => {
+  const y = record?.year
+  return {
+  id: record.id, year: (y != null && y !== '') ? String(y) : '—',
   avg_prisoners: getVal(record, 'avg_Prisoners', 'avg_prisoners'),
   exp_establishment: getVal(record, 'exp_Establishment', 'exp_establishment'),
   exp_diet: getVal(record, 'exp_Diet', 'exp_diet'),
   exp_others: getVal(record, 'exp_Others', 'exp_others'),
   exp_total: getVal(record, 'exp_Total', 'exp_total'),
   cost_per_prisoner: getVal(record, 'cost_Per_Prisoner', 'cost_per_prisoner'),
-})
+  }
+}
 const mapToFormData = (record) => ({
   year: record?.year ?? '',
   avg_prisoners: record?.avg_prisoners ?? record?.avg_Prisoners ?? '',

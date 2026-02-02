@@ -17,8 +17,10 @@ import { exportToCSV } from "@/utils/export"
 import { formatNumber } from "@/utils/format"
 
 const getVal = (r, ...keys) => { for (const k of keys) { const v = r?.[k]; if (v !== undefined && v !== null) return v } return undefined }
-const mapRecord = (record) => ({
-  id: record.id, year: record.year,
+const mapRecord = (record) => {
+  const y = record?.year
+  return {
+  id: record.id, year: (y != null && y !== '') ? String(y) : '—',
   beg_convicted: getVal(record, 'beg_Convicted', 'beg_convicted'),
   beg_undertrial: getVal(record, 'beg_UnderTrial', 'beg_undertrial'),
   beg_civil: getVal(record, 'beg_Civil', 'beg_civil'),
@@ -31,7 +33,8 @@ const mapRecord = (record) => ({
   rem_convicted: getVal(record, 'rem_Convicted', 'rem_convicted'),
   rem_undertrial: getVal(record, 'rem_UnderTrial', 'rem_undertrial'),
   rem_civil: getVal(record, 'rem_Civil', 'rem_civil'),
-})
+  }
+}
 const mapToFormData = (record) => ({
   year: record?.year ?? '',
   beg_convicted: record?.beg_convicted ?? record?.beg_Convicted ?? '',

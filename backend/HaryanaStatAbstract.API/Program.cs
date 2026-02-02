@@ -146,6 +146,8 @@ builder.Services.AddScoped<HaryanaStatAbstract.API.Services.SocialSecurityAndSoc
     HaryanaStatAbstract.API.Services.SocialSecurityAndSocialDefence.Table7_6NoOfPrisonersClasswiseService>();
 builder.Services.AddScoped<HaryanaStatAbstract.API.Services.SocialSecurityAndSocialDefence.ITable7_7PrisonerMaintenanceExpenditureService,
     HaryanaStatAbstract.API.Services.SocialSecurityAndSocialDefence.Table7_7PrisonerMaintenanceExpenditureService>();
+builder.Services.AddScoped<HaryanaStatAbstract.API.Services.SocialSecurityAndSocialDefence.ITable7_8JailIndustryProductionProgressService,
+    HaryanaStatAbstract.API.Services.SocialSecurityAndSocialDefence.Table7_8JailIndustryProductionProgressService>();
 // Legacy (to be removed after migration)
 // builder.Services.AddScoped<ICensusPopulationService, CensusPopulationService>();
 builder.Services.AddScoped<IAuthService, AuthService>();

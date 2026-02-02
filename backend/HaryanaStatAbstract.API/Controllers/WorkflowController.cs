@@ -516,6 +516,11 @@ namespace HaryanaStatAbstract.API.Controllers
                             {
                                 pathMatches = true;
                             }
+                            else if ((menuPath.Contains("social-security") || menuPath.Contains("table7-8") || menuPath.Contains("table7_8")) && 
+                                     (tableNameLower.Contains("ssd") || screenCodeLower.Contains("ssd") || screenCodeLower.Contains("table_7_8") || screenNameLower.Contains("jail") || screenNameLower.Contains("industry")))
+                            {
+                                pathMatches = true;
+                            }
                             if (pathMatches)
                             {
                                 return mapping.DepartmentID;
@@ -555,6 +560,11 @@ namespace HaryanaStatAbstract.API.Controllers
                             }
                             else if ((menuName.Contains("expenditure") || menuName.Contains("maintenance") || menuName.Contains("table 7.7") || menuName.Contains("table7.7")) && 
                                      (screenCodeLower.Contains("ssd") || tableNameLower.Contains("ssd") || screenNameLower.Contains("expenditure")))
+                            {
+                                nameMatches = true;
+                            }
+                            else if ((menuName.Contains("jail") || menuName.Contains("industry") || menuName.Contains("table 7.8") || menuName.Contains("table7.8") || menuName.Contains("production")) && 
+                                     (screenCodeLower.Contains("ssd") || tableNameLower.Contains("ssd") || screenNameLower.Contains("jail")))
                             {
                                 nameMatches = true;
                             }
@@ -657,6 +667,13 @@ namespace HaryanaStatAbstract.API.Controllers
                                 else if ((menuPath.Contains("social-security") || menuPath.Contains("table7-7") || menuPath.Contains("table7_7") || 
                                          menuName.Contains("expenditure") || menuName.Contains("maintenance") || menuName.Contains("table 7.7")) && 
                                          (tableNameLower.Contains("ssd") || screenCodeLower.Contains("ssd") || screenCodeLower.Contains("table_7_7") || screenNameLower.Contains("expenditure")))
+                                {
+                                    menuMatches = true;
+                                }
+                                // Match SSD / Table 7.8 Jail Industry
+                                else if ((menuPath.Contains("social-security") || menuPath.Contains("table7-8") || menuPath.Contains("table7_8") || 
+                                         menuName.Contains("jail") || menuName.Contains("industry") || menuName.Contains("table 7.8")) && 
+                                         (tableNameLower.Contains("ssd") || screenCodeLower.Contains("ssd") || screenCodeLower.Contains("table_7_8") || screenNameLower.Contains("jail")))
                                 {
                                     menuMatches = true;
                                 }

@@ -10,6 +10,7 @@ import Table6_1_Institutions from "@/pages/Education/Table6_1_Institutions"
 import Table7_1_SanctionedStrengthPolice from "@/pages/SocialSecurityAndSocialDefence/Table7_1_SanctionedStrengthPolice"
 import Table7_6_NoOfPrisonersClasswise from "@/pages/SocialSecurityAndSocialDefence/Table7_6_NoOfPrisonersClasswise"
 import Table7_7_PrisonerMaintenanceExpenditure from "@/pages/SocialSecurityAndSocialDefence/Table7_7_PrisonerMaintenanceExpenditure"
+import Table7_8_JailIndustryProductionProgress from "@/pages/SocialSecurityAndSocialDefence/Table7_8_JailIndustryProductionProgress"
 import Login from "@/pages/Login"
 import Register from "@/pages/Register"
 import UserManagementLogin from "@/pages/UserManagementLogin"
@@ -37,6 +38,7 @@ export function Router() {
       <Route path="/social-security/table7-1" element={<ProtectedRoute><Table7_1_SanctionedStrengthPolice /></ProtectedRoute>} />
       <Route path="/social-security/table7-6" element={<ProtectedRoute><Table7_6_NoOfPrisonersClasswise /></ProtectedRoute>} />
       <Route path="/social-security/table7-7" element={<ProtectedRoute><Table7_7_PrisonerMaintenanceExpenditure /></ProtectedRoute>} />
+      <Route path="/social-security/table7-8" element={<ProtectedRoute><Table7_8_JailIndustryProductionProgress /></ProtectedRoute>} />
       <Route path="/users" element={<ProtectedRoute requireAdmin><UserManagement /></ProtectedRoute>} />
       <Route path="/menu-config" element={<ProtectedRoute requireAdmin><MenuConfiguration /></ProtectedRoute>} />
     </Routes>

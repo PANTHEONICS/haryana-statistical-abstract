@@ -71,6 +71,7 @@ export default function DesaHeadDashboard() {
     if (screenCode.includes("TABLE_7_1")) return "/social-security/table7-1"
     if (screenCode.includes("TABLE_7_6") || (screenCode.includes("PRISONER") && !screenCode.includes("EXPENDITURE"))) return "/social-security/table7-6"
     if (screenCode.includes("TABLE_7_7") || screenCode.includes("EXPENDITURE") || screenCode.includes("MAINTENANCE")) return "/social-security/table7-7"
+    if (screenCode.includes("TABLE_7_8") || screenCode.includes("JAIL_INDUSTRY") || screenCode.includes("PRODUCTION_PROGRESS")) return "/social-security/table7-8"
     if (screenCode.includes("SSD")) return "/social-security/table7-1"
     
     return "#"
